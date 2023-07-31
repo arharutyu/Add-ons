@@ -1,28 +1,23 @@
 import React, { useState, useEffect } from 'react'
+import allLevels from "./AllSkills.json"
 
 const ChooseLevel = ({ level, setLevel }) => {
+// create state object for setting level
     const [levels, setLevels] = useState([])
+    
+    // use effect to set all available levels from allskills JSON keys
+    useEffect(() => setLevels(Object.keys(allLevels)), [])
 
-    useEffect(() => {
-        fetch('./AllSkills.json',{
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        }
-        )
-            .then(levels => levels.json())
-            .then(levels => setLevels(levels))
-        }, [])
-        
+    return <>
+{/* return selection form */}
+        <select onChange={event => setLevel(event.target.value)} value={level}>
+            {/* map levels to add option value from levels in state above*/}
+            {levels.map(levels => <option key={levels} value={levels}>{levels}</option>)} 
+        </select> 
+        <p>You have selected: {level}</p>
+        {/* <p>Skills included:</p> */}
 
-        console.log(levels)
-    return (
-        null
-        // <select onChange={event => setLevel(event.target.value)} value={level}>
-        // {levels.map(levels => <option value={levels.keys}>{levels.keys}</option>)}
-        // </select> 
-     )
+    </>
 }
 
 export default ChooseLevel
